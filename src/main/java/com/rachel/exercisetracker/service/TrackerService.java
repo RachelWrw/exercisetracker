@@ -9,13 +9,17 @@ import org.springframework.stereotype.Service;
 
 import com.rachel.exercisetracker.entity.Activity;
 import com.rachel.exercisetracker.exception.NoActivityFoundException;
+import com.rachel.exercisetracker.exception.NoUserFoundException;
 import com.rachel.exercisetracker.repo.TrackerRepo;
+import com.rachel.exercisetracker.repo.UserRepo;
 
 @Service
 public class TrackerService {
 	
 	@Autowired
 	TrackerRepo trackerRepo;
+	@Autowired
+	UserRepo userRepo;
 
 	public List<Activity> getAllActivity(){
 		List<Activity> allActivities = new ArrayList<>();  
@@ -23,8 +27,10 @@ public class TrackerService {
 		return allActivities;
 	}
 	
-	public void addActivity(Activity activity)   
-	{  
+	public void addActivity(Activity activity) {  
+		if(!userRepo.existsById(activity.getUser().getUserName())) {
+			throw new NoUserFoundException("username "+activity.getUser().getUserName()+" does not exist");
+		}
 		trackerRepo.save(activity);  
 	}  
 	

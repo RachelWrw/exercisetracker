@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Entity
@@ -27,6 +29,7 @@ public class Activity {
 
     private Double calories;
     
+    @JsonIgnoreProperties("activities")
     @ManyToOne
     User user;
 
